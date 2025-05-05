@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Algorithm Comparison</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+    <header>
+        <h1>Enhancing Data Security through Encryption</h1>
+        <p>Compare the performance of different encryption algorithms</p>
+    </header>
+
+    <main>
+        <section class="input-section">
+            <h2>Input Data</h2>
+            <div class="input-container">
+                <textarea id="input-data" placeholder="Enter data to encrypt..."></textarea>
+                <div class="options">
+                    <div class="option-group">
+                        <label for="data-size">Data Size (bytes):</label>
+                        <select id="data-size">
+                            <option value="1024">1 KB</option>
+                            <option value="10240">10 KB</option>
+                            <option value="102400">100 KB</option>
+                            <option value="1048576">1 MB</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label for="test-type">Test Type:</label>
+                        <select id="test-type">
+                            <option value="encrypt">Encryption</option>
+                            <option value="decrypt">Decryption</option>
+                            <option value="both">Both</option>
+                        </select>
+                    </div>
+                    <button id="generate-data">Generate Random Data</button>
+                    <button id="start-benchmark">Run Benchmark</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-section">
+            <h2>Benchmark Results</h2>
+            <div class="tabs">
+                <button class="tab-button active" data-tab="performance">Performance</button>
+                <button class="tab-button" data-tab="security">Security Level</button>
+                <button class="tab-button" data-tab="resources">Resource Consumption</button>
+            </div>
+
+            <div class="tab-content active" id="performance">
+                <div class="chart-container">
+                    <canvas id="performance-chart"></canvas>
+                </div>
+                <div class="results-table">
+                    <table id="performance-table">
+                        <thead>
+                            <tr>
+                                <th>Algorithm</th>
+                                <th>Encryption Time (ms)</th>
+                                <th>Decryption Time (ms)</th>
+                                <th>Total Time (ms)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-content" id="security">
+                <div class="chart-container">
+                    <canvas id="security-chart"></canvas>
+                </div>
+                <div class="security-details">
+                    <h3>Security Analysis</h3>
+                    <div class="algorithm-details" id="security-details"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="resources">
+                <div class="chart-container">
+                    <canvas id="resources-chart"></canvas>
+                </div>
+                <div class="complexity-info">
+                    <h3>Complexity Analysis</h3>
+                    <table id="complexity-table">
+                        <thead>
+                            <tr>
+                                <th>Algorithm</th>
+                                <th>Time Complexity</th>
+                                <th>Space Complexity</th>
+                                <th>Memory Usage (MB)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Algorithm and Complexity Analysis - Final Project</p>
+    </footer>
+
+    <!-- Load Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="libs/benchmark.min.js"></script>
+    <script src="js/algorithms/karatsuba.js"></script>
+    <script src="js/algorithms/toom-cook.js"></script>
+    <script src="js/algorithms/schonhage-strassen.js"></script>
+    <script src="js/benchmarking.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
