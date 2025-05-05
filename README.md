@@ -12,9 +12,6 @@ This project implements and compares three advanced multiplication algorithms us
 
 The application provides interactive visualizations and performance metrics to help understand the trade-offs between these algorithms in terms of speed, security level, and resource consumption.
 
-## Live Demo
-
-Visit the [live demo](https://github.com/nylla8444/Encryption-Algorithms-Benchmark) to try the application without installation.
 
 ## Installation
 
