@@ -1,20 +1,20 @@
 /**
- * Schönhage-Strassen Multiplication Algorithm Implementation
+ * Schönhage-Strassen Algorithm Implementation
  * Time Complexity: O(n log n log log n)
  */
 
 const SchonhageStrassen = {
-    // Name and description for UI display
     name: 'Schönhage-Strassen',
     fullName: 'Schönhage-Strassen Algorithm',
     description: 'A fast multiplication algorithm that uses Fast Fourier Transform (FFT) techniques for large integer multiplication.',
     timeComplexity: 'O(n log n log log n)',
     spaceComplexity: 'O(n)',
     securityLevel: 'Very High',
+    lastEncryptionTime: 0,
+    lastDecryptionTime: 0,
 
     /**
      * Core Schönhage-Strassen multiplication function for two large integers
-     * Implements FFT-based multiplication for large integers
      * @param {BigInt} x - First large integer
      * @param {BigInt} y - Second large integer
      * @returns {BigInt} - Product of x and y
@@ -45,6 +45,7 @@ const SchonhageStrassen = {
      * Get the bit length of a BigInt
      * @param {BigInt} x - Number to get bit length of
      * @returns {number} - Bit length
+     * @private
      */
     _getBitLength(x) {
         if (x === 0n) return 1;
@@ -57,6 +58,7 @@ const SchonhageStrassen = {
      * @param {BigInt} y - Second number
      * @param {number} n - Size parameter (power of 2)
      * @returns {BigInt} - Product
+     * @private
      */
     _multiplySSA(x, y, n) {
         // For small enough inputs, use direct multiplication
@@ -123,6 +125,7 @@ const SchonhageStrassen = {
      * @param {BigInt} modulus - Modulus for the transform
      * @param {boolean} inverse - Whether to perform inverse transform
      * @returns {Array<BigInt>} - Transformed values
+     * @private
      */
     _numberTheoreticTransform(values, k, modulus, inverse) {
         // Pad array to a power of 2 length
@@ -143,7 +146,7 @@ const SchonhageStrassen = {
 
         // For inverse transform, use the inverse of omega
         if (inverse) {
-            omega = this._modPow(omega, modulus - 2n, modulus); // Modular inverse via Fermat's little theorem
+            omega = this._modPow(omega, modulus - 2n, modulus);
         }
 
         // NTT butterfly operations
@@ -177,6 +180,7 @@ const SchonhageStrassen = {
     /**
      * Bit-reverse permutation (in-place)
      * @param {Array<BigInt>} arr - Array to permute
+     * @private
      */
     _bitReversePermutation(arr) {
         const n = arr.length;
@@ -195,6 +199,7 @@ const SchonhageStrassen = {
      * @param {number} x - Number to reverse bits
      * @param {number} bits - Number of bits
      * @returns {number} - Number with reversed bits
+     * @private
      */
     _reverseBits(x, bits) {
         let result = 0;
@@ -209,10 +214,10 @@ const SchonhageStrassen = {
      * Find a primitive root for NTT
      * @param {BigInt} modulus - Modulus
      * @returns {BigInt} - Primitive root
+     * @private
      */
     _findPrimitiveRoot(modulus) {
         // For a modulus of form 2^k + 1, primitive root is often 3
-        // This is simplified - a proper implementation would verify the order
         return 3n;
     },
 
@@ -222,6 +227,7 @@ const SchonhageStrassen = {
      * @param {BigInt} exponent - Exponent
      * @param {BigInt} modulus - Modulus
      * @returns {BigInt} - Result of base^exponent mod modulus
+     * @private
      */
     _modPow(base, exponent, modulus) {
         if (modulus === 1n) return 0n;
@@ -245,6 +251,7 @@ const SchonhageStrassen = {
      * @param {BigInt} a - Number to find inverse for
      * @param {BigInt} m - Modulus
      * @returns {BigInt} - Modular multiplicative inverse
+     * @private
      */
     _modInverse(a, m) {
         let [oldR, r] = [a, m];
@@ -258,48 +265,57 @@ const SchonhageStrassen = {
             [oldT, t] = [t, oldT - quotient * t];
         }
 
-        // Make sure the inverse exists
         if (oldR !== 1n) {
             throw new Error('Modular inverse does not exist');
         }
 
-        // Make sure the result is positive
         return (oldS + m) % m;
     },
 
     /**
-     * Generate a key pair for encryption/decryption
-     * @returns {Object} - Key pair with public and private keys
+     * Convert string to array of numeric values
+     * @param {string} str - Input string
+     * @returns {Array<BigInt>} - Array of numeric values
+     * @private
      */
-    generateKeyPair() {
-        // For demonstration, using simple key generation
-        // In real applications, use proper cryptographic methods
-        const publicKey = Math.floor(Math.random() * 1000000) + 100000;
-        const privateKey = Math.floor(Math.random() * 1000000) + 100000;
-
-        return {
-            publicKey: BigInt(publicKey),
-            privateKey: BigInt(privateKey)
-        };
+    _stringToNumeric(str) {
+        const chunks = [];
+        for (let i = 0; i < str.length; i++) {
+            chunks.push(BigInt(str.charCodeAt(i)));
+        }
+        return chunks;
     },
 
     /**
-     * Encrypt data using Schönhage-Strassen multiplication
-     * @param {string} data - Data to encrypt
-     * @param {BigInt} key - Encryption key
-     * @returns {string} - Encrypted data as hexadecimal string
+     * Convert array of numeric values back to string
+     * @param {Array<BigInt>} nums - Array of numeric values
+     * @returns {string} - Resulting string
+     * @private
      */
-    encrypt(data, key) {
+    _numericToString(nums) {
+        let result = '';
+        for (let num of nums) {
+            // Ensure we're in the valid character code range
+            result += String.fromCharCode(Number(num) & 0xFFFF);
+        }
+        return result;
+    },
+
+    /**
+     * Encrypt a string using the algorithm
+     * @param {string} str - String to encrypt
+     * @param {BigInt} key - Encryption key
+     * @returns {string} - Encrypted string as hex
+     */
+    encrypt(str, key) {
         const startTime = performance.now();
 
-        // Convert string to numeric representation
-        const numericData = this._stringToNumeric(data);
-
-        // Encrypt using Schönhage-Strassen multiplication
+        const numericData = this._stringToNumeric(str);
         const encryptedChunks = [];
+
         for (const chunk of numericData) {
             const encrypted = this.multiply(chunk, key);
-            encryptedChunks.push(encrypted.toString(16)); // Convert to hex
+            encryptedChunks.push(encrypted.toString(16));
         }
 
         const endTime = performance.now();
@@ -309,7 +325,7 @@ const SchonhageStrassen = {
     },
 
     /**
-     * Decrypt data using Schönhage-Strassen multiplication
+     * Decrypt data using the algorithm
      * @param {string} encryptedData - Encrypted data as hexadecimal string
      * @param {BigInt} key - Decryption key
      * @returns {string} - Decrypted string
@@ -321,16 +337,16 @@ const SchonhageStrassen = {
         const decryptedChunks = [];
 
         for (const hexChunk of encryptedChunks) {
-            // Fix: Handle negative hex values properly
+            // Handle negative hex values properly
             let encryptedValue;
             if (hexChunk.startsWith('-')) {
-                // If hex string has negative sign, parse without the sign and then negate
                 encryptedValue = -BigInt('0x' + hexChunk.substring(1));
             } else {
                 encryptedValue = BigInt('0x' + hexChunk);
             }
 
-            const decrypted = this.multiply(encryptedValue, key);
+            // Important: DIVIDE by the key instead of multiplying again
+            const decrypted = encryptedValue / key;
             decryptedChunks.push(decrypted);
         }
 
@@ -343,89 +359,20 @@ const SchonhageStrassen = {
     },
 
     /**
-     * Convert string to array of numeric values
-     * @param {string} str - Input string
-     * @returns {Array<BigInt>} - Array of numeric values
-     * @private
+     * Generate a key pair for encryption/decryption
+     * @returns {Object} - Object with public and private keys
      */
-    _stringToNumeric(str) {
-        const chunks = [];
-        // Process in chunks to avoid overflow
-        const chunkSize = 4;
+    generateKeyPair() {
+        // Generate a random key for encryption
+        // In a real system, this would be more cryptographically secure
+        const randomBits = Math.floor(Math.random() * 10) + 20; // 20-30 bits
+        const privateKey = BigInt(Math.floor(Math.random() * (2 ** randomBits))) | 1n; // Ensure it's odd
 
-        for (let i = 0; i < str.length; i += chunkSize) {
-            let numValue = 0n;
-            const end = Math.min(i + chunkSize, str.length);
-
-            for (let j = i; j < end; j++) {
-                numValue = (numValue << 8n) + BigInt(str.charCodeAt(j));
-            }
-
-            chunks.push(numValue);
-        }
-
-        return chunks;
-    },
-
-    /**
-     * Convert array of numeric values back to string
-     * @param {Array<BigInt>} nums - Array of numeric values
-     * @returns {string} - Resulting string
-     * @private
-     */
-    _numericToString(nums) {
-        let result = '';
-        const chunkSize = 4;
-
-        for (const num of nums) {
-            let tempNum = num;
-            const chars = [];
-
-            for (let i = 0; i < chunkSize; i++) {
-                const charCode = Number(tempNum & 0xFFn);
-                if (charCode !== 0) {
-                    chars.unshift(String.fromCharCode(charCode));
-                }
-                tempNum >>= 8n;
-            }
-
-            result += chars.join('');
-        }
-
-        return result;
-    },
-
-    /**
-     * Benchmark the algorithm with provided data
-     * @param {string} data - Data for benchmarking
-     * @returns {Object} - Benchmark results
-     */
-    benchmark(data) {
-        const keyPair = this.generateKeyPair();
-        const startTime = performance.now();
-
-        // Measure encryption
-        const encrypted = this.encrypt(data, keyPair.publicKey);
-        const encryptionTime = this.lastEncryptionTime;
-
-        // Measure decryption
-        const decrypted = this.decrypt(encrypted, keyPair.privateKey);
-        const decryptionTime = this.lastDecryptionTime;
-
-        // Calculate memory usage (approximate)
-        const memorySizeMB = (encrypted.length * 2) / (1024 * 1024);
-
+        // For demonstration purposes, we use the same key for both encryption and decryption
+        // In a real asymmetric system, these would be mathematically related but different
         return {
-            algorithm: this.fullName,
-            encryptionTime,
-            decryptionTime,
-            totalTime: encryptionTime + decryptionTime,
-            encrypted: encrypted.substring(0, 100) + (encrypted.length > 100 ? '...' : ''),
-            decrypted: decrypted.substring(0, 100) + (decrypted.length > 100 ? '...' : ''),
-            memorySizeMB,
-            timeComplexity: this.timeComplexity,
-            spaceComplexity: this.spaceComplexity,
-            securityLevel: this.securityLevel
+            publicKey: privateKey,
+            privateKey: privateKey
         };
     }
 };

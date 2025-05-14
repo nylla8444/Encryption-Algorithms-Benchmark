@@ -163,16 +163,16 @@ const ToomCook = {
         const decryptedChunks = [];
 
         for (const hexChunk of encryptedChunks) {
-            // Fix: Handle negative hex values properly
+            // Handle negative hex values properly
             let encryptedValue;
             if (hexChunk.startsWith('-')) {
-                // If hex string has negative sign, parse without the sign and then negate
                 encryptedValue = -BigInt('0x' + hexChunk.substring(1));
             } else {
                 encryptedValue = BigInt('0x' + hexChunk);
             }
 
-            const decrypted = this.multiply(encryptedValue, key);
+            // Important: DIVIDE by the key instead of multiplying again
+            const decrypted = encryptedValue / key;
             decryptedChunks.push(decrypted);
         }
 
@@ -192,20 +192,9 @@ const ToomCook = {
      */
     _stringToNumeric(str) {
         const chunks = [];
-        // Process in chunks to avoid overflow
-        const chunkSize = 4;
-
-        for (let i = 0; i < str.length; i += chunkSize) {
-            let numValue = 0n;
-            const end = Math.min(i + chunkSize, str.length);
-
-            for (let j = i; j < end; j++) {
-                numValue = (numValue << 8n) + BigInt(str.charCodeAt(j));
-            }
-
-            chunks.push(numValue);
+        for (let i = 0; i < str.length; i++) {
+            chunks.push(BigInt(str.charCodeAt(i)));
         }
-
         return chunks;
     },
 
@@ -217,23 +206,10 @@ const ToomCook = {
      */
     _numericToString(nums) {
         let result = '';
-        const chunkSize = 4;
-
-        for (const num of nums) {
-            let tempNum = num;
-            const chars = [];
-
-            for (let i = 0; i < chunkSize; i++) {
-                const charCode = Number(tempNum & 0xFFn);
-                if (charCode !== 0) {
-                    chars.unshift(String.fromCharCode(charCode));
-                }
-                tempNum >>= 8n;
-            }
-
-            result += chars.join('');
+        for (let num of nums) {
+            // Ensure we're in the valid character code range
+            result += String.fromCharCode(Number(num) & 0xFFFF);
         }
-
         return result;
     },
 

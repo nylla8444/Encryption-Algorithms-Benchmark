@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "email": "test3@email.com",
+      "encryptedPassword": "735d1a74:676df468:686c8ce9:725e81f3:686c8ce9:725e81f3:6c66eeed:785614f9:6f62b870:6077c8e1:725e81f3:725e81f3:7658e3f7:6e641fef:715fe972:63739264",
+      "algorithm": "schonhage",
+      "key": "16685185",
+      "encryptionTime": 0.10000002384185791,
+      "decryptionTime": 0.09999996423721313
+    },
+    {
+      "email": "test1@email.com",
+      "encryptedPassword": "125ae8:1074d0:109d52:123266:109d52:123266:113f5a:132572:11b8e0:f5942:123266:123266:12d46e:11905e:1209e4:fd2c8",
+      "algorithm": "karatsuba",
+      "key": "10370",
+      "encryptionTime": 0.09999996423721313,
+      "decryptionTime": 0.30000001192092896
+    },
+    {
+      "email": "test2@email.com",
+      "encryptedPassword": "26cb24:22c7c8:231d65:267587:231d65:267587:2473d9:287735:2574b0:20707d:267587:267587:27cbfb:251f13:261fea:217154",
+      "algorithm": "toomcook",
+      "key": "21917",
+      "encryptionTime": 0.19999998807907104,
+      "decryptionTime": 0.10000002384185791
+    }
+  ]
+}

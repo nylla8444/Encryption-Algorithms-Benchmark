@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Authentication System</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/system.css">
+</head>
+
+<body>
+    <header>
+        <h1>Secure Authentication System</h1>
+        <p>Demonstrating encryption algorithms in a real-world authentication scenario</p>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Algorithm Benchmark</a></li>
+                <li><a href="system.html" class="active">User Authentication Demo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="auth-section">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="login">Login</button>
+                <button class="tab-button" data-tab="register">Register</button>
+                <button class="tab-button" data-tab="database">User Database</button>
+            </div>
+
+            <div class="tab-content" id="login">
+                <h2>Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email:</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password:</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn">Login</button>
+                </form>
+            </div>
+
+            <div class="tab-content" id="register">
+                <h2>Register</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-email">Email:</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password:</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-algorithm">Encryption Algorithm:</label>
+                        <select id="register-algorithm">
+                            <option value="karatsuba">Karatsuba</option>
+                            <option value="toomcook">Toom-Cook</option>
+                            <option value="schonhage">Schönhage-Strassen</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Register</button>
+                </form>
+            </div>
+
+            <div class="tab-content" id="database">
+                <h2>User Database</h2>
+                <table id="users-table">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Algorithm</th>
+                            <th>Encryption Time</th>
+                            <th>Decryption Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- User data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="results-section">
+            <h2>Authentication Results</h2>
+
+            <div class="result-container">
+                <div class="result-box">
+                    <h3>Security Level</h3>
+                    <div class="security-level" id="security-level">-</div>
+                </div>
+
+                <div class="result-box">
+                    <h3>Time Complexity</h3>
+                    <div id="time-complexity">-</div>
+                </div>
+            </div>
+
+            <div class="data-display">
+                <h3>Data Transformation</h3>
+                <div class="data-row">
+                    <div class="data-cell">
+                        <h4>Original Data</h4>
+                        <pre id="original-data">-</pre>
+                    </div>
+                    <div class="data-cell">
+                        <h4>Encrypted Data</h4>
+                        <pre id="encrypted-data">-</pre>
+                    </div>
+                    <div class="data-cell">
+                        <h4>Decrypted Data</h4>
+                        <pre id="decrypted-data">-</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="stats-chart"></canvas>
+            </div>
+        </section>
+
+
+        <section class="algorithm-comparison-section">
+            <h2>Algorithm Comparison</h2>
+            <p class="section-description">This chart compares the three encryption algorithms across security level,
+                encryption
+                speed, and decryption speed.</p>
+
+            <div class="chart-container radar-container">
+                <canvas id="radar-chart"></canvas>
+            </div>
+
+
+        </section>
+    </main>
+
+    <footer>
+        <p>Encryption Algorithm Demonstration - Authentication System</p>
+    </footer>
+
+    <!-- Load Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/algorithms/karatsuba.js"></script>
+    <script src="js/algorithms/toom-cook.js"></script>
+    <script src="js/algorithms/schonhage-strassen.js"></script>
+    <script src="js/system.js"></script>
+</body>
+
+</html>

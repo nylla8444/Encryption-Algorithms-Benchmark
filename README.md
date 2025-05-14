@@ -39,15 +39,21 @@ cd Encryption-Algorithms-Benchmark
    
 2. To run with a local server:
    ```bash
-   # If you have Python installed
-   python -m http.server
-   
-   # Or with Node.js
-   npx serve
+   Make sure to have node installed first. 
+   If you have not yet please install: https://nodejs.org/en/download
 
-   # OR with Live Server in VSCode
+   # in your terminal, type:
+   node -v 
+   # it should return something like this: 
+   v22.14.0
+
+   # Now, install the dependencies, open your VSCode terminal and then type:
+   npm install
+
+   # To run, open your VSCode terminal and then type:
+   node server.js
    ```
-   Then navigate to `http://localhost:8000` (Python) or `http://localhost:3000` (Node.js)
+   
 
 ## Using the Application
 

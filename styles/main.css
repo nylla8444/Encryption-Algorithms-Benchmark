@@ -220,3 +220,87 @@ footer {
         height: 250px;
     }
 }
+
+/* Main navigation styling */
+.main-nav {
+    margin-top: 1rem;
+}
+
+.main-nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.main-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.main-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.main-nav a.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+}
+
+/* Notification styling (used in both pages) */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.notification {
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    color: white;
+    width: 300px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    animation: slideIn 0.3s ease-out, fadeOut 0.5s ease-out 2.5s forwards;
+    cursor: pointer;
+}
+
+.notification.success {
+    background-color: #2c5364;
+}
+
+.notification.error {
+    background-color: #e74c3c;
+}
+
+.notification.info {
+    background-color: #3498db;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
